@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'main_menu.dart';
 
 class WelcomeScreen extends StatelessWidget{
   @override
@@ -47,7 +48,13 @@ class WelcomeScreen extends StatelessWidget{
                   child: FlatButton(
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                   color: Colors.blue,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainMenu()),
+                          (Route<dynamic> route) => false,
+                    );
+                  },
                   child: Text(
                     "Działamy!",
                     style: TextStyle(
