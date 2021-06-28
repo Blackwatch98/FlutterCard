@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "78017741393",
+    "project_id": "fluttercard-95b41",
+    "storage_bucket": "fluttercard-95b41.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78017741393:android:5cb1dc2f5dd64e0df12e70",
+        "android_client_info": {
+          "package_name": "com.example.flutter_card"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78017741393-lajbdbv4toftjmq1qcve5i7kh8ujoe81.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYnKJTG7B5F6XANyw3pHCbCMJPOXcYvDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78017741393-lajbdbv4toftjmq1qcve5i7kh8ujoe81.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
