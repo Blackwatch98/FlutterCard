@@ -21,7 +21,7 @@ class MainMenu extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyBooks()),
+                      MaterialPageRoute(builder: (context) => MyBooksAlertDialog()),
                     );
                   },
                   splashColor: Colors.blue,
