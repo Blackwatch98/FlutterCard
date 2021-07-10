@@ -4,9 +4,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_card/models/firestorage_file.dart';
+import 'BooksListItemWidget.dart';
 import 'firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart' as p;
+
 
 class MyBooksAlertDialog extends StatefulWidget {
   @override
@@ -20,6 +23,15 @@ class _MyBooksAlertDialog extends State<MyBooksAlertDialog> {
   UploadTask myUploadTask;
   File myFile;
 
+  Future<List<FirestorageFile>> files;
+
+  @override
+  void initState() {
+    super.initState();
+
+    files = FirebaseApi.listExample("files");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,10 +44,34 @@ class _MyBooksAlertDialog extends State<MyBooksAlertDialog> {
           await createAlertDialog(context);
         },
       ),
-      body: ListView(
-      ),
+      body:  FutureBuilder<List<FirestorageFile>> (
+        future: files,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            default:
+              if (snapshot.hasError) {
+                return Center(child: Text('Some error occurred!'));
+              } else {
+                final files = snapshot.data;
+                return AnimatedList(
+                      initialItemCount: files.length,
+                      itemBuilder: (context, index, animation) =>
+                        buildItem(files[index], index, animation));
+              }
+          }
+        },
+      )
     );
   }
+
+  Widget buildItem(item, int index, Animation<double> animation) =>
+    BooksListItemWidget(
+      item: item,
+      animation: animation,
+      onClicked: () => removeItem(index),
+    );
 
   Future<void> createAlertDialog(BuildContext context) async {
     final fileName = myFile != null ? p.basename(myFile.path) : 'No File Selected';
@@ -92,6 +128,9 @@ class _MyBooksAlertDialog extends State<MyBooksAlertDialog> {
         ),
       );
       });
+    }).then((val) {
+        files = FirebaseApi.listExample("files");
+        setState(() {});
     });
   }
 
@@ -135,6 +174,7 @@ class _MyBooksAlertDialog extends State<MyBooksAlertDialog> {
         final progress = snap.bytesTransferred / snap.totalBytes;
         final percentage = (progress * 100).toStringAsFixed(2);
 
+
         return Text(
           '$percentage %',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -144,4 +184,8 @@ class _MyBooksAlertDialog extends State<MyBooksAlertDialog> {
       }
     },
   );
+
+  void removeItem(int index) {
+    //remove metod to implement
+  }
 }
