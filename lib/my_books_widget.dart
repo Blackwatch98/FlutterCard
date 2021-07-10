@@ -10,6 +10,8 @@ import 'firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart' as p;
 
+import 'pdf_viewer_screen.dart';
+
 
 class MyBooksAlertDialog extends StatefulWidget {
   @override
@@ -70,7 +72,9 @@ class _MyBooksAlertDialog extends State<MyBooksAlertDialog> {
     BooksListItemWidget(
       item: item,
       animation: animation,
-      onClicked: () => removeItem(index),
+      onClicked: () {
+        removeItem(0);
+      },
     );
 
   Future<void> createAlertDialog(BuildContext context) async {
@@ -142,7 +146,7 @@ class _MyBooksAlertDialog extends State<MyBooksAlertDialog> {
 
     final extension = p.extension(path);
 
-    if(extension != ".pdf") {
+    if(extension.toUpperCase() != ".PDF") {
       print("Bad extension error!"); //Needs to be replaced with toast
       return;
     }
@@ -188,4 +192,6 @@ class _MyBooksAlertDialog extends State<MyBooksAlertDialog> {
   void removeItem(int index) {
     //remove metod to implement
   }
+
+
 }

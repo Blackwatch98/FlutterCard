@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_card/models/firestorage_file.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 class FirebaseApi {
   static UploadTask uploadFile(String destination, File file) {
@@ -22,6 +24,7 @@ class FirebaseApi {
 
       return ref.putData(data);
     } on FirebaseException catch (e) {
+      print("An error has occurred:" + e.message);
       return null;
     }
   }
@@ -43,4 +46,25 @@ class FirebaseApi {
 
   static Future<List<String>> _getDownloadLinks(List<Reference> refs) =>
       Future.wait(refs.map((ref) => ref.getDownloadURL()).toList());
+
+  static Future<File> loadFirebase(String url) async {
+    try {
+      final refPDF = FirebaseStorage.instance.ref('files').child(url);
+      final bytes = await refPDF.getData();
+
+      return _getFile(url, bytes);
+    } catch (e) {
+      print("An error has occurred:" + e.message);
+      return null;
+    }
+  }
+
+  static Future<File> _getFile(String url, List<int> bytes) async {
+    final filename = p.basename(url);
+
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/$filename');
+    await file.writeAsBytes(bytes, flush: true);
+    return file;
+  }
 }

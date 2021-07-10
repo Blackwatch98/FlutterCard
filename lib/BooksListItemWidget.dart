@@ -1,6 +1,9 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card/models/firestorage_file.dart';
+import 'firebase_storage.dart';
+import 'pdf_viewer_screen.dart';
+import 'dart:io';
 
 class BooksListItemWidget extends StatelessWidget{
   final FirestorageFile item;
@@ -25,10 +28,22 @@ class BooksListItemWidget extends StatelessWidget{
         contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         leading: Icon(Icons.book),
         title: Text(item.name),
+        onTap: () async {
+          final file = await FirebaseApi.loadFirebase(item.name);
+
+          if (file == null) return;
+          openPDF(context, file);
+        },
         trailing: IconButton(
           icon: Icon(Icons.delete, color: Colors.red,),
+          onPressed: onClicked,
         ),
       )
   );
+
+  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => PDFViewerScreen(file: file)),
+  );
+
 
 }
